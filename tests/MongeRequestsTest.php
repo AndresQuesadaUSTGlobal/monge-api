@@ -69,8 +69,9 @@ final class MongeRequestsTest extends ParentRequestsTest
 
     public function testPreAutorizacion() : void
     {
-        $results = static::getClient()->PreAutorizacion( 188,
-         830.0,
+        $results = static::getClient()->PreAutorizacion(
+            "188",
+         "830.0",
          260,
          66459,
          0,
@@ -78,13 +79,13 @@ final class MongeRequestsTest extends ParentRequestsTest
          1,
          10001,
          "C002",
-         20000.0,
+         "20000.0",
          "1",
          3,
             "1234445",
          "23455",
-         0.0,
-         0.0,
+         "0.0",
+         "0.0",
          "CLIENTE_ECOMMERCE"
         );
 

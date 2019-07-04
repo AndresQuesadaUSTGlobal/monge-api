@@ -383,21 +383,21 @@ class Client extends HttpClient
 
     public function PreAutorizacion(
             string $CodigoMoneda,
-            decimal $CuotaPactada,
+            string $CuotaPactada,
             int $IdCanalVenta,
-            long $IdCuenta,
+            int $IdCuenta,
             int $IdF_crddPlazosInformativos,
-            long $IdPersona,
+            int $IdPersona,
             int $IdPromocion,
-            long $IdSegmento,
+            int $IdSegmento,
             string $Tienda,
-            decimal $MontoFinanciado,
+            string $MontoFinanciado,
             string $NumeroOrden,
             int $Plazo,
             string $Sku,
             string $PrecioProducto,
-            decimal $Prima,
-            decimal $TasaInteresNormal,
+            string $Prima,
+            string $TasaInteresNormal,
             string $UsuarioCreacion)
 
 
