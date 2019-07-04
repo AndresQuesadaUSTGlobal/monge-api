@@ -351,6 +351,13 @@ class Client extends HttpClient
         return $request->launch();
     }
 
+    public function ListarAccionProceso()
+    {
+
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Accion/ListarAccionProceso', 94, []);
+        return $request->launch();
+    }
     public function EnviarToken(string $medioEnvio, string $descripcionMedioEnvio, int $tipoIdentificacion, string $identificacion, $otp):array
     {
         $params = [
@@ -366,6 +373,46 @@ class Client extends HttpClient
         return $request->launch();
     }
 
+
+    public function ValidaCliente( string $identificacion, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $correoElectronico, $fechaNacimiento, $tipoEjecucion)
+    {
+        $params = [
+            'LlaveSistema' => 'TVCRI',
+            "identificacion"  => $identificacion,
+            "primerNombre" => $primerNombre,
+            "segundoNombre" => $segundoNombre,
+            "primerApellido" => $primerApellido,
+            "segundoApellido" => $segundoApellido,
+            "correoElectronico" => $correoElectronico,
+            "fechaNacimiento" => $fechaNacimiento,
+            "tipoEjecucion" => $tipoEjecucion
+
+
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Cliente/ValidaCliente', 96, $params);
+        return $request->launch();
+    }
+    public function BuscarClientePadron(int $tipoIdentificacion, string $identificacion, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $correoElectronico, $fechaNacimiento, $tipoEjecucion)
+    {
+        $params = [
+            'LlaveSistema' => 'TVCRI',
+            "tipoIdentificacion"  => $tipoIdentificacion,
+            "identificacion"  => $identificacion,
+            "primerNombre" => $primerNombre,
+            "segundoNombre" => $segundoNombre,
+            "primerApellido" => $primerApellido,
+            "segundoApellido" => $segundoApellido,
+            "correoElectronico" => $correoElectronico,
+            "fechaNacimiento" => $fechaNacimiento,
+            "tipoEjecucion" => $tipoEjecucion
+
+
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Cliente/BuscarClientePadron', 96, $params);
+        return $request->launch();
+    }
 
     public function ValidarToken(int $tipoIdentificacion, string $identificacion, $otp)
     {

@@ -55,6 +55,18 @@ final class MongeRequestsTest extends ParentRequestsTest
         $this->assertIsArray($results);
     }
 
+    public function testValidaCliente() : void
+    {
+        $results = static::getClient()->ValidaCliente( "02-0448-0419", "", "", "", "", "", "", "");
+        $this->assertIsArray($results);
+    }
+
+    public function testBuscarClientePadron() : void
+    {
+        $results = static::getClient()->BuscarClientePadron( 0,"00-1234-0121", "", "", "", "", "", "", "");
+        $this->assertIsArray($results);
+    }
+
     public function testEnviarToken() : void
     {
         $results = static::getClient()->EnviarToken( "Email","UsuarioTV@grupomonge.com", 0, "00-1234-0121", 0);
@@ -64,6 +76,12 @@ final class MongeRequestsTest extends ParentRequestsTest
     public function testValidarToken() : void
     {
         $results = static::getClient()->ValidarToken( 0,"00-1234-0121", "");
+        $this->assertIsArray($results);
+    }
+
+    public function testListarAccionProceso() : void
+    {
+        $results = static::getClient()->ListarAccionProceso();
         $this->assertIsArray($results);
     }
 
