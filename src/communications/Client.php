@@ -358,15 +358,14 @@ class Client extends HttpClient
             'Accion/ListarAccionProceso', 94, []);
         return $request->launch();
     }
-    public function EnviarToken(string $medioEnvio, string $descripcionMedioEnvio, int $tipoIdentificacion, string $identificacion, $otp):array
+    public function EnviarToken(string $medioEnvio, string $descripcionMedioEnvio, int $tipoIdentificacion, string $identificacion):array
     {
         $params = [
             'LlaveSistema' => 'TVCRI',
             "medioEnvio"  => $medioEnvio,
             "descripcionMedioEnvio"  => $descripcionMedioEnvio,
             "tipoIdentificacion"  => $tipoIdentificacion,
-            "identificacion"  => $identificacion,
-            "otp"  => $otp
+            "identificacion"  => $identificacion
         ];
         $request = new MongeRequest($this->config, $this->mongeClient, null,
             'Token/EnviarToken', 94, $params);
@@ -414,7 +413,7 @@ class Client extends HttpClient
         return $request->launch();
     }
 
-    public function ValidarToken(int $tipoIdentificacion, string $identificacion, $otp)
+    public function ValidarToken(int $tipoIdentificacion, string $identificacion, $otp):array
     {
         $params = [
             'LlaveSistema' => 'TVCRI',

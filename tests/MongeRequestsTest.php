@@ -69,7 +69,7 @@ final class MongeRequestsTest extends ParentRequestsTest
 
     public function testEnviarToken() : void
     {
-        $results = static::getClient()->EnviarToken( "Email","UsuarioTV@grupomonge.com", 0, "00-1234-0121", 0);
+        $results = static::getClient()->EnviarToken( "Email","UsuarioTV@grupomonge.com", 0, "00-1234-0121");
         $this->assertIsArray($results);
     }
 
