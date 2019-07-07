@@ -36,7 +36,7 @@ class MongeRequest extends JsonRequest
      */
     function onResponseProcess($parsedJson)
     {
-        if ($parsedJson->currentException) {
+        if ($parsedJson->currentException && !property_exists($parsedJson, 'response')) {
             // Raise exception if returned on response details
             throw new WakupException(new \Exception($parsedJson->currentException));
         } else {

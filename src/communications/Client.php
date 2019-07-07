@@ -351,6 +351,79 @@ class Client extends HttpClient
         return $request->launch();
     }
 
+
+    public function GuardarDocumentosFirmados(string $requestNumber, string $Firma, int $IDTipoDocumento, string $Plantilla, string $Nombre, $Descripcion)
+    {
+        $items = [[
+            'IDTipoDocumento ' => $IDTipoDocumento ,
+            'Plantilla' => $Plantilla,
+            'Nombre ' => $Nombre,
+            'Descripcion ' => $Descripcion
+        ]];
+        $params = [
+            'NumeroSolicitud' => $requestNumber,
+            'Firma' => $Firma,
+            'Documentos ' => $items,
+            'LlaveSistema' => 'TVCRI'
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Solicitud/GuardarDocumentosFirmados', 99, $params);
+        return $request->launch();
+    }
+
+    public function AdjuntarDocumentos(string $requestNumber, string $Constancia, string $Certificacion)
+    {
+        $params = [
+            'NumeroSolicitud' => $requestNumber,
+            'Constancia'=> $Constancia,
+            'Certificacion' => $Certificacion,
+            'LlaveSistema' => 'TVCRI'
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Solicitud/AdjuntarDocumentos', 99, $params);
+        return $request->launch();
+    }
+
+    public function CargarDocumentoIdentidadFrente(string $requestNumber, string $DocumentoIdentidad, string $Firma, int $IDTipoDocumento, string $Plantilla, string $Nombre, $Descripcion)
+    {
+        $items = [[
+            'IDTipoDocumento ' => $IDTipoDocumento ,
+            'Plantilla' => $Plantilla,
+            'Nombre ' => $Nombre,
+            'Descripcion ' => $Descripcion
+        ]];
+        $params = [
+            'NumeroSolicitud' => $requestNumber,
+            'DocumentoIdentidad ' => $DocumentoIdentidad,
+            'Firma' => $Firma,
+            'Documentos ' => $items,
+            'LlaveSistema' => 'TVCRI'
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Solicitud/CargarDocumentoIdentidadFrente', 99, $params);
+        return $request->launch();
+    }
+
+    public function CargarDocumentoIdentidadDorso(string $requestNumber, string $DocumentoIdentidad, string $Firma, int $IDTipoDocumento, string $Plantilla, string $Nombre, $Descripcion)
+    {
+        $items = [[
+            'IDTipoDocumento ' => $IDTipoDocumento ,
+            'Plantilla' => $Plantilla,
+            'Nombre ' => $Nombre,
+            'Descripcion ' => $Descripcion
+        ]];
+        $params = [
+            'NumeroSolicitud' => $requestNumber,
+            'DocumentoIdentidad ' => $DocumentoIdentidad,
+            'Firma' => $Firma,
+            'Documentos ' => $items,
+            'LlaveSistema' => 'TVCRI'
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Solicitud/CargarDocumentoIdentidadFrente', 99, $params);
+        return $request->launch();
+    }
+
     public function ListarAccionProceso()
     {
 
@@ -358,10 +431,9 @@ class Client extends HttpClient
             'Accion/ListarAccionProceso', 94, []);
         return $request->launch();
     }
-    public function EnviarToken(string $medioEnvio, string $descripcionMedioEnvio, int $tipoIdentificacion, string $identificacion):array
+    public function EnviarToken(string $medioEnvio, string $descripcionMedioEnvio, string $tipoIdentificacion, string $identificacion)
     {
         $params = [
-            'LlaveSistema' => 'TVCRI',
             "medioEnvio"  => $medioEnvio,
             "descripcionMedioEnvio"  => $descripcionMedioEnvio,
             "tipoIdentificacion"  => $tipoIdentificacion,
@@ -372,6 +444,17 @@ class Client extends HttpClient
         return $request->launch();
     }
 
+    public function EnviarOtp(string $medioEnvio, string $descripcionMedioEnvio)
+    {
+        $params = [
+            'LlaveSistema' => 'TVCRI',
+            "medioEnvio"  => $medioEnvio,
+            "descripcionMedioEnvio"  => $descripcionMedioEnvio
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Otp/EnviarOtp', 94, $params);
+        return $request->launch();
+    }
 
     public function ValidaCliente( string $identificacion, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $correoElectronico, $fechaNacimiento, $tipoEjecucion)
     {
@@ -413,7 +496,7 @@ class Client extends HttpClient
         return $request->launch();
     }
 
-    public function ValidarToken(int $tipoIdentificacion, string $identificacion, $otp):array
+    public function ValidarToken(int $tipoIdentificacion, string $identificacion, $otp)
     {
         $params = [
             'LlaveSistema' => 'TVCRI',
@@ -424,6 +507,20 @@ class Client extends HttpClient
         ];
         $request = new MongeRequest($this->config, $this->mongeClient, null,
             'Token/ValidarToken', 94, $params);
+        return $request->launch();
+    }
+
+    public function ValidarOtp(string $idSolicitud, string $usuario, string $token)
+    {
+        $params = [
+            'LlaveSistema' => 'TVCRI',
+            "idSolicitud" => $idSolicitud,
+            "usuario" => $usuario,
+            "token" => "12345"
+
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Otp/ValidarOtp', 94, $params);
         return $request->launch();
     }
 

@@ -55,28 +55,84 @@ final class MongeRequestsTest extends ParentRequestsTest
         $this->assertIsArray($results);
     }
 
+    public function testAdjuntarDocumentos() : void
+    {
+        $results = static::getClient()->AdjuntarDocumentos("7826C298-059D-4D01-8222-FFFF0D2D087F","iVBORw0KGgoAAAANSUhEUgAAAL0AAABFCAYAAAAfFudEAAAACXBIWXMAAA=","iVBORw0KGgoAAAANSUhEUgAAAL0AAABFCAYAAAAfFudEAAAACXBIWXMAAA=");
+        $this->assertIsArray($results);
+    }
+
+    public function testGuardarDocumentosFirmados() : void
+    {
+        $results = static::getClient()->GuardarDocumentosFirmados("7826C298-059D-4D01-8222-FFFF0D2D087F",
+"iVBORw0KGgoAAAANSUhEUgAAAL0AAABFCAYAAAAfFudEAAAACXBIWXMAAA=",
+6,
+"",
+"Constancia Salarial",
+"Constancia Salarial"
+);
+        $this->assertIsArray($results);
+    }
+
+    public function testCargarDocumentoIdentidadFrente() : void
+    {
+        $results = static::getClient()->CargarDocumentoIdentidadFrente("7826C298-059D-4D01-8222-FFFF0D2D087F",
+            "data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAL0AAABFCAYAAAAfFudEAAAACXBIWXMAAA=",
+            "iVBORw0KGgoAAAANSUhEUgAAAL0AAABFCAYAAAAfFudEAAAACXBIWXMAAA=",
+            6,
+            "",
+            "Constancia Salarial",
+            "Constancia Salarial"
+        );
+        $this->assertIsObject($results);
+    }
+
+    public function testCargarDocumentoIdentidadDorso() : void
+    {
+        $results = static::getClient()->CargarDocumentoIdentidadDorso("7826C298-059D-4D01-8222-FFFF0D2D087F",
+            "data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAL0AAABFCAYAAAAfFudEAAAACXBIWXMAAA=",
+            "iVBORw0KGgoAAAANSUhEUgAAAL0AAABFCAYAAAAfFudEAAAACXBIWXMAAA=",
+            6,
+            "",
+            "Constancia Salarial",
+            "Constancia Salarial"
+        );
+        $this->assertIsObject($results);
+    }
+
     public function testValidaCliente() : void
     {
         $results = static::getClient()->ValidaCliente( "02-0448-0419", "", "", "", "", "", "", "");
-        $this->assertIsArray($results);
+        $this->assertIsObject($results);
     }
 
     public function testBuscarClientePadron() : void
     {
         $results = static::getClient()->BuscarClientePadron( 0,"00-1234-0121", "", "", "", "", "", "", "");
-        $this->assertIsArray($results);
+        $this->assertIsObject($results);
     }
 
     public function testEnviarToken() : void
     {
-        $results = static::getClient()->EnviarToken( "Email","UsuarioTV@grupomonge.com", 0, "00-1234-0121");
-        $this->assertIsArray($results);
+        $results = static::getClient()->EnviarToken( "Email","UsuarioTV@grupomonge.com", "0", "00-1234-0121");
+        $this->assertIsBool($results);
     }
 
+    public function testEnviarOtp() : void
+    {
+        $results = static::getClient()->EnviarOtp( "Email","UsuarioTV@grupomonge.com");
+        $this->assertIsBool($results);
+    }
+
+
+    public function testValidarOtp() : void
+    {
+        $results = static::getClient()->ValidarOtp( "52826B18-C5D6-4761-9B20-8D9836E207B0","UsuarioTV@grupomonge.com","12345");
+        $this->assertIsObject($results);
+    }
     public function testValidarToken() : void
     {
         $results = static::getClient()->ValidarToken( 0,"00-1234-0121", "");
-        $this->assertIsArray($results);
+        $this->assertIsBool($results);
     }
 
     public function testListarAccionProceso() : void
