@@ -29,7 +29,7 @@ class Client extends HttpClient
      * @return bool Returns true if login is successful
      * @throws WakupException
      */
-    public function login(string $email, string $password) : bool
+    public function login(string $email, string $password): bool
     {
         $request = new LoginRequest($this->config, $this->defaultClient, $email, $password);
         return $request->launch();
@@ -43,7 +43,7 @@ class Client extends HttpClient
      * @return AzureUser information of the created user
      * @throws WakupException
      */
-    public function register(string $email, string $password) : AzureUser
+    public function register(string $email, string $password): AzureUser
     {
         $jsonBody = [
             'accountEnabled' => true,
@@ -73,7 +73,7 @@ class Client extends HttpClient
      * @return bool true if password has been successfully changed, or false if user can not be found
      * @throws WakupException
      */
-    public function resetPassword(string $email, string $newPassword) : bool
+    public function resetPassword(string $email, string $newPassword): bool
     {
         $user = $this->findUser($email);
         if ($user == null) return false;
@@ -97,7 +97,7 @@ class Client extends HttpClient
      * @return bool true if email has been successfully changed, or false if user can not be found
      * @throws WakupException
      */
-    public function changeEmail(string $email, string $newEmail) : bool
+    public function changeEmail(string $email, string $newEmail): bool
     {
         $user = $this->findUser($email);
         if ($user == null) return false;
@@ -122,7 +122,7 @@ class Client extends HttpClient
      * @return bool true if user has been successfully deleted, or false if user can not be found
      * @throws WakupException
      */
-    public function deleteUser(string $email) : bool
+    public function deleteUser(string $email): bool
     {
         $user = $this->findUser($email);
         if ($user == null) return false;
@@ -139,7 +139,7 @@ class Client extends HttpClient
      * @return bool true if an user with the given email is already registered
      * @throws WakupException
      */
-    public function isUserRegistered(string $email) : bool
+    public function isUserRegistered(string $email): bool
     {
         return $this->findUser($email) != null;
     }
@@ -151,7 +151,7 @@ class Client extends HttpClient
      * @return AzureUser|null information of the created user. Null if the user does not exist
      * @throws WakupException
      */
-    public function findUser(string $email) : ?AzureUser
+    public function findUser(string $email): ?AzureUser
     {
         $params = ['$filter' => "signInNames/any(x:x/value eq '{$email}')"];
         $request = new UsersRequest($this->config, $this->azureClient, 'GET', [], $params, null,
@@ -172,7 +172,7 @@ class Client extends HttpClient
      * @return PaginatedAttributes Product attributes list with pagination information
      * @throws WakupException
      */
-    public function getPaginatedAttributes($page = 0, $perPage = 25) : PaginatedAttributes
+    public function getPaginatedAttributes($page = 0, $perPage = 25): PaginatedAttributes
     {
         $request = new WakupRequest($this->config, $this->defaultClient, new PaginatedAttributes(),
             'catalog/attributes', [], $page, $perPage);
@@ -187,7 +187,7 @@ class Client extends HttpClient
      * @return PaginatedCategories Product categories list with pagination information
      * @throws WakupException
      */
-    public function getPaginatedCategories($page = 0, $perPage = 25) : PaginatedCategories
+    public function getPaginatedCategories($page = 0, $perPage = 25): PaginatedCategories
     {
         $request = new WakupRequest($this->config, $this->defaultClient, new PaginatedCategories(),
             'catalog/categories', [], $page, $perPage);
@@ -204,7 +204,7 @@ class Client extends HttpClient
      * @return PaginatedProducts List of paginated products that has changed since last update time
      * @throws WakupException
      */
-    public function getPaginatedProducts(\DateTime $lastUpdate = null, $page = 0, $perPage = 25) : PaginatedProducts
+    public function getPaginatedProducts(\DateTime $lastUpdate = null, $page = 0, $perPage = 25): PaginatedProducts
     {
         $params = $lastUpdate != null ? ['lastUpdate' => $lastUpdate->format(\DateTime::ATOM)] : [];
         $request = new WakupRequest($this->config, $this->defaultClient, new PaginatedProducts(),
@@ -221,7 +221,7 @@ class Client extends HttpClient
      * @return PaginatedStores
      * @throws WakupException
      */
-    public function getNearestStores(float $latitude, float $longitude, $page = 0, $perPage = 25) : PaginatedStores
+    public function getNearestStores(float $latitude, float $longitude, $page = 0, $perPage = 25): PaginatedStores
     {
         $params = [
             'companyId' => $this->config->wakupCompanyId,
@@ -242,7 +242,7 @@ class Client extends HttpClient
      * @return StoreStock[] List of objects containing available stock for requested products in nearest stores
      * @throws WakupException
      */
-    public function getNearestStoresStock(Cart $cart, float $latitude, float $longitude, $storeCount = 10) : array
+    public function getNearestStoresStock(Cart $cart, float $latitude, float $longitude, $storeCount = 10): array
     {
         $nearStores = $this->getNearestStores($latitude, $longitude, 0, $storeCount)->getStores();
         $storeIds = [];
@@ -258,8 +258,7 @@ class Client extends HttpClient
             array_push($result, $stock);
         }
         # Sort by distance
-        usort($result, function(StoreStock $a, StoreStock $b)
-        {
+        usort($result, function (StoreStock $a, StoreStock $b) {
             return $a->getStore()->getDistanceInMiles() > $b->getStore()->getDistanceInMiles();
         });
         return $result;
@@ -276,7 +275,7 @@ class Client extends HttpClient
      * @return UserCreditInfo|null Credit information for given user. Null if user is not registered on credit system.
      * @throws WakupException
      */
-    public function getUserCreditInfo(string $userIdentifier) : ?UserCreditInfo
+    public function getUserCreditInfo(string $userIdentifier): ?UserCreditInfo
     {
         $params = [
             'TipoIdentificacion' => 51,
@@ -306,7 +305,7 @@ class Client extends HttpClient
      * @return WarrantyPlan[] List of available warranty plans for given product
      * @throws WakupException
      */
-    public function getWarrantyPlans(string $sku, float $price) : array
+    public function getWarrantyPlans(string $sku, float $price): array
     {
         $params = ['sku' => $sku, 'costo' => $price];
         $request = new MongeRequest($this->config, $this->mongeClient, Warranty::class,
@@ -323,7 +322,7 @@ class Client extends HttpClient
      * @return FinancialPromotion[] List of financial promotions that applies to given user and cart
      * @throws WakupException
      */
-    public function getFinancialPromotions(UserCreditInfo $creditInfo, Cart $cart) : array
+    public function getFinancialPromotions(UserCreditInfo $creditInfo, Cart $cart): array
     {
         $skuArray = [];
         foreach ($cart->getProducts() as $product) {
@@ -355,7 +354,7 @@ class Client extends HttpClient
     public function GuardarDocumentosFirmados(string $requestNumber, string $Firma, int $IDTipoDocumento, string $Plantilla, string $Nombre, $Descripcion)
     {
         $items = [[
-            'IDTipoDocumento ' => $IDTipoDocumento ,
+            'IDTipoDocumento ' => $IDTipoDocumento,
             'Plantilla' => $Plantilla,
             'Nombre ' => $Nombre,
             'Descripcion ' => $Descripcion
@@ -375,7 +374,7 @@ class Client extends HttpClient
     {
         $params = [
             'NumeroSolicitud' => $requestNumber,
-            'Constancia'=> $Constancia,
+            'Constancia' => $Constancia,
             'Certificacion' => $Certificacion,
             'LlaveSistema' => 'TVCRI'
         ];
@@ -387,7 +386,7 @@ class Client extends HttpClient
     public function CargarDocumentoIdentidadFrente(string $requestNumber, string $DocumentoIdentidad, string $Firma, int $IDTipoDocumento, string $Plantilla, string $Nombre, $Descripcion)
     {
         $items = [[
-            'IDTipoDocumento ' => $IDTipoDocumento ,
+            'IDTipoDocumento ' => $IDTipoDocumento,
             'Plantilla' => $Plantilla,
             'Nombre ' => $Nombre,
             'Descripcion ' => $Descripcion
@@ -407,7 +406,7 @@ class Client extends HttpClient
     public function CargarDocumentoIdentidadDorso(string $requestNumber, string $DocumentoIdentidad, string $Firma, int $IDTipoDocumento, string $Plantilla, string $Nombre, $Descripcion)
     {
         $items = [[
-            'IDTipoDocumento ' => $IDTipoDocumento ,
+            'IDTipoDocumento ' => $IDTipoDocumento,
             'Plantilla' => $Plantilla,
             'Nombre ' => $Nombre,
             'Descripcion ' => $Descripcion
@@ -424,6 +423,76 @@ class Client extends HttpClient
         return $request->launch();
     }
 
+    public function GuardarDatosAdicionales(
+        string $IDSolicitud,
+        int $IDNivelEducativo,
+        int $IDTipoPropiedad,
+        int $IDTipoContrato,
+        string $PrimerNombreRef1,
+        string $SegundoNombreRef1,
+        string $PrimerApellidoRef1,
+        string $SegundoApellidoRef1,
+        string $PrimerNombreRef2,
+        string $SegundoNombreRef2,
+        string $PrimerApellidoRef2,
+        string $SegundoApellidoRef2,
+        string $TelefonoCelularRef1,
+        string $TelefonoCelularRef2,
+        int $IDNacionalidad,
+        int $TieneVehiculo,
+        int $NumeroDependientes,
+        string $FechaDesdeVive,
+        string $NombreComercial,
+        string $FechaIngresoTrabajo,
+        string $TelefonoTrabajo,
+        int $Sueldo,
+        string $DetalleDireccion,
+        int $idOrigenFondo,
+        int $idActividadEconomica,
+        int $idNivelDireccion1Trabaja,
+        int $idNivelDireccion2Trabaja,
+        int $idNivelDireccion3Trabaja
+
+
+    )
+
+    {
+        $params = [
+            "IDSolicitud" => $IDSolicitud,
+            "IDNivelEducativo" => $IDNivelEducativo,
+            "IDTipoPropiedad" => $IDTipoPropiedad,
+            "IDTipoContrato" => $IDTipoContrato,
+            "PrimerNombreRef1" => $PrimerNombreRef1,
+            "SegundoNombreRef1" => $SegundoNombreRef1,
+            "PrimerApellidoRef1" => $PrimerApellidoRef1,
+            "SegundoApellidoRef1" => $SegundoApellidoRef1,
+            "PrimerNombreRef2" => $PrimerNombreRef2,
+            "SegundoNombreRef2" => $SegundoNombreRef2,
+            "PrimerApellidoRef2" => $PrimerApellidoRef2,
+            "SegundoApellidoRef2" => $SegundoApellidoRef2,
+            "TelefonoCelularRef1" => $TelefonoCelularRef1,
+            "TelefonoCelularRef2" => $TelefonoCelularRef2,
+            "IDNacionalidad" => $IDNacionalidad,
+            "TieneVehiculo" => $TieneVehiculo,
+            "NumeroDependientes" => $NumeroDependientes,
+            "FechaDesdeVive" => $FechaDesdeVive,
+            "NombreComercial" => $NombreComercial,
+            "FechaIngresoTrabajo" => $FechaIngresoTrabajo,
+            "TelefonoTrabajo" => $TelefonoTrabajo,
+            "Sueldo" => $Sueldo,
+            "DetalleDireccion" => $DetalleDireccion,
+            "idOrigenFondo" => $idOrigenFondo,
+            "idActividadEconomica" => $idActividadEconomica,
+            "idNivelDireccion1Trabaja" => $idNivelDireccion1Trabaja,
+            "idNivelDireccion2Trabaja" => $idNivelDireccion2Trabaja,
+            "idNivelDireccion3Trabaja" => $idNivelDireccion3Trabaja,
+            "LlaveSistema" => "TVCRI"
+        ];
+        $request = new MongeRequest($this->config, $this->mongeClient, null,
+            'Solicitud/GuardarDatosAdicionales', 94, $params);
+        return $request->launch();
+    }
+
     public function ListarAccionProceso()
     {
 
@@ -431,36 +500,40 @@ class Client extends HttpClient
             'Accion/ListarAccionProceso', 94, []);
         return $request->launch();
     }
+
     public function EnviarToken(string $medioEnvio, string $descripcionMedioEnvio, string $tipoIdentificacion, string $identificacion)
     {
         $params = [
-            "medioEnvio"  => $medioEnvio,
-            "descripcionMedioEnvio"  => $descripcionMedioEnvio,
-            "tipoIdentificacion"  => $tipoIdentificacion,
-            "identificacion"  => $identificacion
+            "medioEnvio" => $medioEnvio,
+            "descripcionMedioEnvio" => $descripcionMedioEnvio,
+            "tipoIdentificacion" => $tipoIdentificacion,
+            "identificacion" => $identificacion
         ];
         $request = new MongeRequest($this->config, $this->mongeClient, null,
             'Token/EnviarToken', 94, $params);
         return $request->launch();
     }
 
-    public function EnviarOtp(string $medioEnvio, string $descripcionMedioEnvio)
+    public function EnviarOtp(string $usuario, string $medioEnvio, string $descripcionMedioEnvio, int $tipoIdentificacion, string $identificacion)
     {
         $params = [
+            "usuario" => $usuario,
             'LlaveSistema' => 'TVCRI',
-            "medioEnvio"  => $medioEnvio,
-            "descripcionMedioEnvio"  => $descripcionMedioEnvio
+            "medioEnvio" => $medioEnvio,
+            "descripcionMedioEnvio" => $descripcionMedioEnvio,
+            "tipoIdentificacion" => $tipoIdentificacion,
+            "identificacion" => $identificacion,
         ];
         $request = new MongeRequest($this->config, $this->mongeClient, null,
             'Otp/EnviarOtp', 94, $params);
         return $request->launch();
     }
 
-    public function ValidaCliente( string $identificacion, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $correoElectronico, $fechaNacimiento, $tipoEjecucion)
+    public function ValidaCliente(string $identificacion, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $correoElectronico, $fechaNacimiento, $tipoEjecucion)
     {
         $params = [
             'LlaveSistema' => 'TVCRI',
-            "identificacion"  => $identificacion,
+            "identificacion" => $identificacion,
             "primerNombre" => $primerNombre,
             "segundoNombre" => $segundoNombre,
             "primerApellido" => $primerApellido,
@@ -475,12 +548,13 @@ class Client extends HttpClient
             'Cliente/ValidaCliente', 96, $params);
         return $request->launch();
     }
+
     public function BuscarClientePadron(int $tipoIdentificacion, string $identificacion, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $correoElectronico, $fechaNacimiento, $tipoEjecucion)
     {
         $params = [
             'LlaveSistema' => 'TVCRI',
-            "tipoIdentificacion"  => $tipoIdentificacion,
-            "identificacion"  => $identificacion,
+            "tipoIdentificacion" => $tipoIdentificacion,
+            "identificacion" => $identificacion,
             "primerNombre" => $primerNombre,
             "segundoNombre" => $segundoNombre,
             "primerApellido" => $primerApellido,
@@ -500,9 +574,9 @@ class Client extends HttpClient
     {
         $params = [
             'LlaveSistema' => 'TVCRI',
-            "tipoIdentificacion"  => $tipoIdentificacion,
-            "identificacion"  => $identificacion,
-            "otp"  => $otp
+            "tipoIdentificacion" => $tipoIdentificacion,
+            "identificacion" => $identificacion,
+            "otp" => $otp
 
         ];
         $request = new MongeRequest($this->config, $this->mongeClient, null,
@@ -525,24 +599,23 @@ class Client extends HttpClient
     }
 
     public function PreAutorizacion(
-            string $CodigoMoneda,
-            string $CuotaPactada,
-            int $IdCanalVenta,
-            int $IdCuenta,
-            int $IdF_crddPlazosInformativos,
-            int $IdPersona,
-            int $IdPromocion,
-            int $IdSegmento,
-            string $Tienda,
-            string $MontoFinanciado,
-            string $NumeroOrden,
-            int $Plazo,
-            string $Sku,
-            string $PrecioProducto,
-            string $Prima,
-            string $TasaInteresNormal,
-            string $UsuarioCreacion)
-
+        string $CodigoMoneda,
+        string $CuotaPactada,
+        int $IdCanalVenta,
+        int $IdCuenta,
+        int $IdF_crddPlazosInformativos,
+        int $IdPersona,
+        int $IdPromocion,
+        int $IdSegmento,
+        string $Tienda,
+        string $MontoFinanciado,
+        string $NumeroOrden,
+        int $Plazo,
+        string $Sku,
+        string $PrecioProducto,
+        string $Prima,
+        string $TasaInteresNormal,
+        string $UsuarioCreacion)
 
 
     {
@@ -581,7 +654,7 @@ class Client extends HttpClient
      * @throws WakupException
      */
     public function getFinancialScenarios(
-        UserCreditInfo $creditInfo, int $promotionId, Cart $cart) : array
+        UserCreditInfo $creditInfo, int $promotionId, Cart $cart): array
     {
         $TYPE_ID_PRODUCT = 1;
         $TYPE_ID_WARRANTY = 3;
@@ -589,7 +662,7 @@ class Client extends HttpClient
         $warrantySkuArray = [];
         $pricesArray = [];
         $warrantyPricesArray = [];
-        for($i = 0; $i < count($cart->getProducts()); ++$i) {
+        for ($i = 0; $i < count($cart->getProducts()); ++$i) {
             $product = $cart->getProducts()[$i];
             // Add product SKU
             $formattedSku = join('&', [$TYPE_ID_PRODUCT, 0, $i, $product->getSku()]);
@@ -627,7 +700,7 @@ class Client extends HttpClient
      * @return StoreIdStock[] List of stock availability for each requested store
      * @throws WakupException
      */
-    public function getStoresStock(array $stores, Cart $cart) : array
+    public function getStoresStock(array $stores, Cart $cart): array
     {
         $items = [];
         foreach ($cart->getProducts() as $cartProduct) {
@@ -658,7 +731,7 @@ class Client extends HttpClient
      * @return string Reservation identifier. Required to later cancel it.
      * @throws WakupException
      */
-    public function reserveOrderStock(string $orderType, Store $store, Cart $cart) : string
+    public function reserveOrderStock(string $orderType, Store $store, Cart $cart): string
     {
         $items = [];
         foreach ($cart->getProducts() as $cartProduct) {
@@ -721,7 +794,7 @@ class Client extends HttpClient
      * @return bool Returns true if request is successful
      * @throws WakupException
      */
-    public function cancelOrderStockReservation(string $orderType, string $reservationId) : bool
+    public function cancelOrderStockReservation(string $orderType, string $reservationId): bool
     {
         switch ($orderType) {
             case self::ORDER_TYPE_STORE:
@@ -751,7 +824,7 @@ class Client extends HttpClient
      * @return bool Returns true if request is successful
      * @throws WakupException
      */
-    public function confirmOrderStockReservation(string $orderType, string $reservationId, Cart $cart) : bool
+    public function confirmOrderStockReservation(string $orderType, string $reservationId, Cart $cart): bool
     {
         switch ($orderType) {
             case self::ORDER_TYPE_STORE:
