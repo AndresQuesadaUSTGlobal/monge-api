@@ -12,7 +12,7 @@ namespace Wakup;
 class FinancialScenario
 {
     private $id, $term, $rate, $fee, $totalFee, $segmentDescription, $paymentDate,
-        $frequency, $annualEffectiveRate, $warrantyFee, $segmentId;
+        $frequency, $annualEffectiveRate, $warrantyFee, $segmentId, $idTPlanSugerido;
 
     /**
      * @return int Scenario identifier
@@ -189,6 +189,18 @@ class FinancialScenario
     {
         $this->segmentId = $segmentId;
     }
+
+
+    /**
+     * @param int idTPlanSugerido segment identifier
+     */
+    public function setidTPlanSugerido(int $idTPlanSugerido): void
+    {
+        $this->ordenPedidoFinanciacion = $idTPlanSugerido;
+    }
+
+
+
 
 
 }
