@@ -687,7 +687,7 @@ class Client extends HttpClient
             'precioGarantia' => join(';', $warrantyPricesArray),
             'moneda' => $this->config->mongeCurrencyId
         ];
-        $request = new MongeRequest($this->config, $this->mongeClient, null,
+        $request = new MongeRequest($this->config, $this->mongeClient, FinancialScenario::class,
             'Cotizacion/ListarEscenarios', 98, $params);
         return $request->launch();
     }
