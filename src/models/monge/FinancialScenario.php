@@ -196,7 +196,7 @@ class FinancialScenario
      */
     public function setordenPedidoFinanciacion(array $ordenPedidoFinanciacion): void
     {
-        $this->ordenPedidoFinanciacion = $ordenPedidoFinanciacion;
+        $this->ordenPedidoFinanciacion = $ordenPedidoFinanciacion ? $ordenPedidoFinanciacion : [];
     }
 
     public function getordenPedidoFinanciacion() : array
