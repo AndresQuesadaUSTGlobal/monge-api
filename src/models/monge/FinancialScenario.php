@@ -192,9 +192,9 @@ class FinancialScenario
 
 
     /**
-     * @param array ordenPedidoFinanciacion segment identifier
+     * @param array ordenPedidoFinanciacion  identifier
      */
-    public function setordenPedidoFinanciacion(array $ordenPedidoFinanciacion): void
+    public function setordenPedidoFinanciacion($ordenPedidoFinanciacion): void
     {
         $this->ordenPedidoFinanciacion = $ordenPedidoFinanciacion ? $ordenPedidoFinanciacion : [];
     }

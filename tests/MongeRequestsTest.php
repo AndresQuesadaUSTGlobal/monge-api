@@ -223,7 +223,7 @@ final class MongeRequestsTest extends ParentRequestsTest
     {
         $clientInfo = static::getClient()->getUserCreditInfo("06-0363-0273");
         $cart = $this->getTestCart(['135360']);
-        $results = static::getClient()->getFinancialScenarios($clientInfo, 1, $cart);
+        $results = static::getClient()->getFinancialScenarios($clientInfo, 1090, $cart);
         $this->assertIsArray($results);
         foreach ($results as $item) {
             $this->assertInstanceOf(\Wakup\FinancialScenario::class, $item);
